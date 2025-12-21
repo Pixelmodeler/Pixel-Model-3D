@@ -14,7 +14,7 @@
 
   <style>
     /* ==========================================================================
-       PIXEL MODELER 3D - THE SURVIVAL SYSTEM (EXTENDED TECHNICAL EDITION)
+       PIXEL MODELER 3D - THE SURVIVAL SYSTEM (GITHUB VERSION)
        ==========================================================================
     */
     
@@ -188,6 +188,9 @@
       transition: all 0.3s;
       border: none;
       cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
     }
 
     .btn-cta:hover {
@@ -425,7 +428,9 @@
         <button onclick="showTab('licenca')" class="tab-btn" id="btn-licenca">MIT License</button>
       </div>
       
-      <button class="btn-cta">Download v12.5</button>
+      <a href="https://github.com/Pixelmodeler/Pixel-Model-3D/releases/download/v12.5/PixelModeler3D_v12.5.exe" target="_blank" class="btn-cta">
+        <i class="fab fa-github"></i> Download .EXE
+      </a>
     </div>
   </nav>
 
@@ -440,7 +445,9 @@
             <h1>Não nasceu como engine. <span class="text-gradient">Nasceu como desespero.</span></h1>
             <p style="font-size: 1.4rem; color: var(--muted); margin-bottom: 40px;">Uma ferramenta que entende o peso de começar do zero. O Pixel Modeler 3D foi moldado pela frustração de quem só queria contar uma história e não encontrava o caminho.</p>
             <div style="display: flex; gap: 20px;">
-              <button class="btn-cta" style="padding: 18px 40px; font-size: 1.1rem;">Baixar v12.5 Grátis</button>
+              <a href="https://github.com/Pixelmodeler/Pixel-Model-3D/releases/download/v12.5/PixelModeler3D_v12.5.exe" target="_blank" class="btn-cta" style="padding: 18px 40px; font-size: 1.1rem;">
+                <i class="fab fa-github"></i> Get Latest Release (.EXE)
+              </a>
               <button class="glass" onclick="showTab('historia')" style="padding: 18px 40px; border-radius: var(--radius-sm); color: white; cursor: pointer; border: 1px solid var(--card-border);">Ler Nossa História</button>
             </div>
           </div>
@@ -626,23 +633,18 @@
               <div class="terms-intro">
                 Ao acessar ou utilizar o Pixel Modeler 3D, você concorda integralmente com os termos descritos abaixo.
               </div>
-
               <h3>1. Sobre o Pixel Modeler 3D</h3>
               <p>O Pixel Modeler 3D é uma engine/editor de criação 3D em desenvolvimento contínuo, criada para facilitar a criação de mapas e ambientes tridimensionais.</p>
-
               <h3>2. Estado de Desenvolvimento (Importante)</h3>
               <ul>
                 <li>O Pixel Modeler 3D ainda está em desenvolvimento;</li>
                 <li>Podem ocorrer bugs, falhas visuais ou perda de dados;</li>
                 <li>Funcionalidades podem ser removidas ou reformuladas.</li>
               </ul>
-
               <h3>3. Conta e Dados</h3>
               <p>O e-mail informado pode ser usado para avisos do projeto. Não vendemos dados para terceiros.</p>
-
               <h3>4. Sistema de IA e Monitoramento</h3>
               <p>Analisamos padrões de uso (tempo de criação, ferramentas) para melhorar a UX. Dados não-pessoais e transparentes.</p>
-
               <h3>5. Conteúdo do Usuário</h3>
               <p>Tudo o que você criar pertence a VOCÊ. Pode usar para fins comerciais ou pessoais sem taxas.</p>
             </div>
@@ -655,7 +657,7 @@
       <section class="section-padding">
         <div class="container">
           <div class="terms-box glass">
-            <h2 class="text-gradient" style="text-align: center; margin-bottom: 40px; font-size: 2.5rem;">Licença MIT (Fictícia)</h2>
+            <h2 class="text-gradient" style="text-align: center; margin-bottom: 40px; font-size: 2.5rem;">Licença MIT</h2>
             <div class="license-container">
               MIT License<br><br>
               Copyright (c) 2025 Pixel Modeler 3D - "O Retorno Project"<br><br>
@@ -714,7 +716,7 @@
       </div>
       <div style="padding-top: 40px; border-top: 1px solid var(--card-border); display: flex; justify-content: space-between; font-size: 0.8rem; color: #475569;">
         <p>&copy; 2025 Pixel Modeler 3D. O Retorno Project.</p>
-        <p>Desenvolvido com suor e persistência.</p>
+        <p>Desenvolvido com suor e persistência no GitHub.</p>
       </div>
     </div>
   </footer>
@@ -764,19 +766,10 @@
 
     /* 3. LOG DE INICIALIZAÇÃO TÉCNICA */
     window.addEventListener('DOMContentLoaded', () => {
-      console.log("%c PIXEL MODELER 3D %c v12.5 INITIALIZED ", 
+      console.log("%c PIXEL MODELER 3D %c GITHUB VERSION ", 
         "background: #2dd4bf; color: #000; font-weight: bold; padding: 2px 5px; border-radius: 3px 0 0 3px;", 
-        "background: #0ea5e9; color: #fff; font-weight: bold; padding: 2px 5px; border-radius: 0 3px 3px 0;");
+        "background: #24292e; color: #fff; font-weight: bold; padding: 2px 5px; border-radius: 0 3px 3px 0;");
       
-      console.table({
-        "Engine": "Three.js r160",
-        "Renderer": "WebGL 2.0",
-        "ShadowMap": "PCFSoft",
-        "UI_Intelligence": "Active",
-        "Persistence": "LocalStorage Enabled"
-      });
-
-      // Simulação do objeto global Tracker conforme doc técnica
       window.userTracker = {
         sessionStartTime: Date.now(),
         shortcutsUsed: 0,
