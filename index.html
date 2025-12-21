@@ -1,0 +1,789 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pixel Modeler 3D | Forjada na Persistência</title>
+  <meta name="description" content="A engine 3D que nasceu do desespero e evolui com sua habilidade. Criada de desenvolvedor para desenvolvedor.">
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <style>
+    /* ==========================================================================
+       PIXEL MODELER 3D - THE SURVIVAL SYSTEM (EXTENDED TECHNICAL EDITION)
+       ==========================================================================
+    */
+    
+    :root {
+      --background: #020617;
+      --foreground: #f0f9ff;
+      --card: rgba(15, 23, 42, 0.9);
+      --card-border: rgba(45, 212, 191, 0.15);
+      --primary: #2dd4bf; 
+      --primary-hover: #5eead4;
+      --primary-glow: rgba(45, 212, 191, 0.3);
+      --secondary: #0ea5e9; 
+      --secondary-glow: rgba(14, 165, 233, 0.3);
+      --muted: #94a3b8;
+      --accent: #22d3ee;
+      --success: #10b981;
+      --error: #f43f5e;
+      --code-bg: #0b1120;
+      
+      --radius-sm: 0.8rem;
+      --radius-md: 1.5rem;
+      --radius-lg: 3rem;
+      --container-max: 1300px;
+      
+      --font-main: 'Plus Jakarta Sans', sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+    }
+
+    /* Reset e Base */
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-padding-top: 100px;
+      scrollbar-gutter: stable;
+    }
+
+    body {
+      font-family: var(--font-main);
+      background-color: var(--background);
+      color: var(--foreground);
+      line-height: 1.7;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Scrollbar Personalizada */
+    ::-webkit-scrollbar { width: 10px; }
+    ::-webkit-scrollbar-track { background: var(--background); }
+    ::-webkit-scrollbar-thumb { 
+        background: #1e293b; 
+        border-radius: 20px;
+        border: 2px solid var(--background);
+    }
+    ::-webkit-scrollbar-thumb:hover { background: var(--primary); }
+
+    .container {
+      max-width: var(--container-max);
+      margin: 0 auto;
+      padding: 0 2.5rem;
+    }
+
+    .text-gradient {
+      background: linear-gradient(135deg, #fff 30%, var(--primary) 65%, var(--secondary) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .glass {
+      background: var(--card);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid var(--card-border);
+      box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.7);
+    }
+
+    .section-padding { padding: 80px 0; }
+
+    /* Tab Logic CSS */
+    .tab-content {
+      display: none;
+      animation: tabFade 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
+    @keyframes tabFade {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Navegação */
+    .nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 90px;
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      background: rgba(2, 6, 23, 0.85);
+      backdrop-filter: blur(15px);
+      border-bottom: 1px solid var(--card-border);
+    }
+
+    .nav-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 800;
+      font-size: 1.25rem;
+      text-decoration: none;
+      color: white;
+      letter-spacing: -1px;
+      cursor: pointer;
+    }
+
+    .logo-icon {
+      width: 38px;
+      height: 38px;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 0 20px var(--primary-glow);
+    }
+
+    .nav-links { display: flex; gap: 8px; }
+    .nav-links button {
+      background: none;
+      border: none;
+      font-family: var(--font-main);
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--muted);
+      cursor: pointer;
+      transition: 0.3s;
+      padding: 10px 12px;
+      border-radius: var(--radius-sm);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .nav-links button:hover { color: var(--primary); background: rgba(45, 212, 191, 0.05); }
+    .nav-links button.active { color: var(--primary); background: rgba(45, 212, 191, 0.1); }
+
+    .btn-cta {
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      color: #020617;
+      padding: 12px 24px;
+      border-radius: var(--radius-sm);
+      font-weight: 700;
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      text-decoration: none;
+      transition: all 0.3s;
+      border: none;
+      cursor: pointer;
+    }
+
+    .btn-cta:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 25px var(--primary-glow);
+    }
+
+    /* Hero Section */
+    .hero {
+      min-height: 90vh;
+      display: flex;
+      align-items: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-grid {
+      position: absolute;
+      inset: 0;
+      background-image: 
+        linear-gradient(rgba(45, 212, 191, 0.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(45, 212, 191, 0.05) 1px, transparent 1px);
+      background-size: 60px 60px;
+      mask-image: radial-gradient(circle at 50% 50%, black 20%, transparent 90%);
+      z-index: -1;
+    }
+
+    .hero h1 {
+      font-size: clamp(3rem, 8vw, 6rem);
+      line-height: 1;
+      font-weight: 800;
+      letter-spacing: -4px;
+      margin-bottom: 25px;
+    }
+
+    /* Story Section */
+    .story-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 100px;
+      align-items: start;
+    }
+
+    .story-step {
+      padding-left: 30px;
+      border-left: 1px solid var(--card-border);
+      position: relative;
+      margin-bottom: 40px;
+    }
+
+    .story-step::before {
+      content: '';
+      position: absolute;
+      left: -5px;
+      top: 0;
+      width: 9px;
+      height: 9px;
+      background: var(--primary);
+      border-radius: 50%;
+      box-shadow: 0 0 10px var(--primary);
+    }
+
+    .story-step h3 { font-size: 1.8rem; margin-bottom: 15px; color: var(--primary); }
+    .emphasis { color: white; font-weight: 700; border-bottom: 2px solid var(--primary); }
+
+    /* Technical Specs Cards */
+    .tech-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 25px;
+      margin-top: 40px;
+    }
+
+    .tech-card {
+      padding: 30px;
+      border-radius: var(--radius-md);
+      background: rgba(15, 23, 42, 0.4);
+      border: 1px solid var(--card-border);
+      transition: 0.3s;
+    }
+
+    .tech-card:hover {
+      border-color: var(--primary);
+      transform: translateY(-5px);
+    }
+
+    .tech-card h4 {
+      color: var(--primary);
+      font-family: var(--font-mono);
+      margin-bottom: 15px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .tech-card ul {
+      list-style: none;
+      font-size: 0.9rem;
+      color: var(--muted);
+    }
+
+    .tech-card li {
+      margin-bottom: 8px;
+      padding-left: 15px;
+      position: relative;
+    }
+
+    .tech-card li::before {
+      content: '→';
+      position: absolute;
+      left: 0;
+      color: var(--secondary);
+    }
+
+    /* Terminal */
+    .terminal {
+      background: #010409;
+      border-radius: 12px;
+      padding: 25px;
+      font-family: var(--font-mono);
+      font-size: 0.9rem;
+      border: 1px solid var(--card-border);
+      box-shadow: 0 30px 60px rgba(0,0,0,0.5);
+      position: sticky;
+      top: 120px;
+    }
+
+    .terminal-header { display: flex; gap: 8px; margin-bottom: 20px; }
+    .dot { width: 12px; height: 12px; border-radius: 50%; }
+    .dot-r { background: #ff5f56; }
+    .dot-y { background: #ffbd2e; }
+    .dot-g { background: #27c93f; }
+    .t-user { color: var(--primary); }
+    .t-system { color: var(--secondary); }
+    .t-error { color: var(--error); }
+    .t-success { color: var(--success); }
+
+    /* UI Adaptive */
+    .level-selector { display: grid; grid-template-columns: repeat(3, 1fr); gap: 25px; margin-bottom: 60px; }
+    .level-card {
+      padding: 35px; border-radius: var(--radius-md); cursor: pointer; transition: 0.4s; text-align: center;
+      border: 1px solid var(--card-border); background: rgba(15, 23, 42, 0.4);
+    }
+    .level-card.active { border-color: var(--primary); background: rgba(45, 212, 191, 0.1); box-shadow: 0 0 30px var(--primary-glow); }
+
+    .adaptive-ui { padding: 60px; border-radius: var(--radius-md); background: #010409; border: 1px solid var(--card-border); }
+    .ui-mockup { background: #0d1117; border-radius: 8px; height: 300px; margin-top: 30px; display: flex; position: relative; overflow: hidden; }
+    .ui-sidebar { width: 60px; border-right: 1px solid #30363d; background: #161b22; }
+    .ui-content { flex: 1; padding: 20px; display: flex; flex-wrap: wrap; gap: 15px; align-content: flex-start; }
+    .ui-tool { width: 40px; height: 40px; background: #30363d; border-radius: 6px; }
+    .ui-tool.advanced { display: none; background: var(--secondary); }
+
+    /* Social Section */
+    .social-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 30px;
+      margin-top: 50px;
+    }
+    
+    .social-link {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 50px;
+      border-radius: var(--radius-md);
+      text-decoration: none;
+      color: white;
+      transition: 0.4s;
+      border: 1px solid var(--card-border);
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .social-link i { font-size: 3rem; margin-bottom: 20px; z-index: 1; }
+    .social-link span { font-weight: 700; font-size: 1.2rem; z-index: 1; }
+    
+    .social-instagram { background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%); }
+    .social-discord { background: #5865F2; }
+    .social-tiktok { background: #000000; border-color: #ff0050; }
+    
+    .social-link:hover { transform: scale(1.05); box-shadow: 0 0 40px rgba(255,255,255,0.1); }
+
+    /* Terms & License Section Style */
+    .terms-box { padding: 60px; border-radius: var(--radius-md); max-width: 1000px; margin: 0 auto; }
+    .terms-content h3 { color: var(--primary); margin: 35px 0 15px; font-size: 1.4rem; display: flex; align-items: center; gap: 10px; border-bottom: 1px solid rgba(45, 212, 191, 0.1); padding-bottom: 5px; }
+    .terms-content h3::before { content: '>'; font-family: var(--font-mono); color: var(--secondary); }
+    .terms-content p { margin-bottom: 15px; color: #cbd5e1; }
+    .terms-content ul { margin-bottom: 25px; padding-left: 20px; list-style-type: square; color: #cbd5e1; }
+    .terms-content li { margin-bottom: 10px; }
+    .terms-intro { text-align: center; font-style: italic; margin-bottom: 40px; color: var(--muted); border-bottom: 1px solid var(--card-border); padding-bottom: 30px; }
+
+    .license-container {
+      background: #0b1120;
+      padding: 40px;
+      border-radius: 10px;
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      border: 1px dashed var(--muted);
+      color: #94a3b8;
+      line-height: 1.5;
+    }
+
+    /* Footer */
+    .footer { padding: 80px 0 40px; border-top: 1px solid var(--card-border); background: #010409; margin-top: 100px; }
+    .footer-grid { display: grid; grid-template-columns: 2fr repeat(3, 1fr); gap: 50px; margin-bottom: 60px; }
+    .footer h4 { margin-bottom: 25px; color: white; }
+    .footer a { display: block; margin-bottom: 12px; color: var(--muted); text-decoration: none; transition: 0.3s; cursor: pointer; }
+    .footer a:hover { color: var(--primary); }
+
+    @media (max-width: 1024px) {
+      .story-grid, .footer-grid, .social-grid { grid-template-columns: 1fr; }
+      .level-selector { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="nav">
+    <div class="container nav-content">
+      <a onclick="showTab('home')" class="logo">
+        <div class="logo-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="3"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path></svg>
+        </div>
+        <span>PIXEL MODELER 3D</span>
+      </a>
+      
+      <div class="nav-links">
+        <button onclick="showTab('home')" class="tab-btn active" id="btn-home">Home</button>
+        <button onclick="showTab('historia')" class="tab-btn" id="btn-historia">História</button>
+        <button onclick="showTab('tecnologia')" class="tab-btn" id="btn-tecnologia">Engine Specs</button>
+        <button onclick="showTab('comunidade')" class="tab-btn" id="btn-comunidade">Social</button>
+        <button onclick="showTab('termos')" class="tab-btn" id="btn-termos">Termos</button>
+        <button onclick="showTab('licenca')" class="tab-btn" id="btn-licenca">MIT License</button>
+      </div>
+      
+      <button class="btn-cta">Download v12.5</button>
+    </div>
+  </nav>
+
+  <main style="margin-top: 90px;">
+    
+    <div id="home" class="tab-content active">
+      <section class="hero">
+        <div class="hero-grid"></div>
+        <div class="container">
+          <div style="max-width: 900px;">
+            <div style="font-family: var(--font-mono); color: var(--primary); margin-bottom: 20px;">[ SYSTEM STATUS: RECOVERED FROM CHAOS ]</div>
+            <h1>Não nasceu como engine. <span class="text-gradient">Nasceu como desespero.</span></h1>
+            <p style="font-size: 1.4rem; color: var(--muted); margin-bottom: 40px;">Uma ferramenta que entende o peso de começar do zero. O Pixel Modeler 3D foi moldado pela frustração de quem só queria contar uma história e não encontrava o caminho.</p>
+            <div style="display: flex; gap: 20px;">
+              <button class="btn-cta" style="padding: 18px 40px; font-size: 1.1rem;">Baixar v12.5 Grátis</button>
+              <button class="glass" onclick="showTab('historia')" style="padding: 18px 40px; border-radius: var(--radius-sm); color: white; cursor: pointer; border: 1px solid var(--card-border);">Ler Nossa História</button>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <div id="historia" class="tab-content">
+      <section class="section-padding">
+        <div class="container">
+          <h2 style="font-size: 3rem; margin-bottom: 60px;" class="text-gradient">Forjada na Persistência</h2>
+          <div class="story-grid">
+            <div class="story-content">
+              <div class="story-step">
+                <h3>Tudo começou moscando.</h3>
+                <p>Eu estava em casa, sem nada para fazer, e pensei o que todo mundo já pensou um dia: <span class="emphasis">“vou fazer um jogo”</span>. Parecia simples até eu abrir o Blender.</p>
+                <p>Em poucos minutos, parecia que eu estava brigando com o programa. Botão demais, conceitos demais. Eu só queria criar um mapa.</p>
+              </div>
+              <div class="story-step">
+                <h3>A insistência no erro.</h3>
+                <p>Tentei usar IA para acelerar tudo em "O Retorno". Fui burro no sentido mais honesto: achei que prompts gigantes fariam o trabalho por mim.</p>
+                <p>Foram <span class="emphasis">cinco dias</span> ajustando detalhes, esperando que a IA entendesse minha cabeça. Mas nenhuma IA lê mentes. Ela falhou porque eu não tinha a ferramenta certa.</p>
+              </div>
+              <div class="story-step">
+                <h3>A decisão com medo.</h3>
+                <p>Parei e pensei: "Por que estou forçando a IA em vez de criar a ferramenta para eu mesmo fazer?". Passei um dia e meio apenas processando se eu dava conta.</p>
+                <p>Não houve empolgação, apenas a necessidade de resolver um problema que ninguém mais resolveria por mim.</p>
+              </div>
+            </div>
+            <div class="terminal">
+              <div class="terminal-header">
+                <div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div>
+              </div>
+              <div class="terminal-line"><span class="t-user">user@brain:~$</span> start_project "O Retorno"</div>
+              <div class="terminal-line"><span class="t-system">[INFO]</span> Loading Blender...</div>
+              <div class="terminal-line"><span class="t-error">[ERROR]</span> User confused by 4,000 shortcuts.</div>
+              <div class="terminal-line"><span class="t-user">user@brain:~$</span> use_ai_generator --prompt "huge_map"</div>
+              <div class="terminal-line"><span class="t-system">[INFO]</span> Processing for 5 days...</div>
+              <div class="terminal-line"><span class="t-error">[CRITICAL]</span> AI output does not match imagination.</div>
+              <div class="terminal-line"><span class="t-user">user@brain:~$</span> shutdown --all</div>
+              <div class="terminal-line"><span class="t-user">user@brain:~$</span> create_engine --from-scratch</div>
+              <div class="terminal-line"><span class="t-success">[READY]</span> Pixel Modeler 3D initialized.</div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <div id="tecnologia" class="tab-content">
+      <section class="section-padding">
+        <div class="container">
+          <div style="text-align: center; margin-bottom: 60px;">
+            <h2 style="font-size: 3rem;" class="text-gradient">Arquitetura de Baixo Nível</h2>
+            <p style="color: var(--muted); margin-top: 20px;">Por trás da simplicidade visual, existe um monstro técnico otimizado.</p>
+          </div>
+
+          <div class="tech-grid">
+            <div class="tech-card">
+              <h4>1. Renderização e Gráficos</h4>
+              <ul>
+                <li><strong>Engine Base:</strong> Three.js (r160) via WebGLRenderer.</li>
+                <li><strong>Iluminação Dinâmica:</strong> Sistema triplo com AmbientLight, Sun-like DirectionalLight e HemisphereLight.</li>
+                <li><strong>Sombras:</strong> PCFSoftShadowMap com resolução de 4096px para fidelidade extrema.</li>
+                <li><strong>Profundidade:</strong> Implementação de FogExp2 e logarithmicDepthBuffer para eliminar z-fighting.</li>
+              </ul>
+            </div>
+            <div class="tech-card">
+              <h4>2. Geometria Procedural</h4>
+              <ul>
+                <li><strong>Criação Real-Time:</strong> Uso de THREE.Shape e ExtrudeGeometry para malhas vivas.</li>
+                <li><strong>Auto-Merge System:</strong> Utiliza BufferGeometryUtils para fundir malhas e reduzir Draw Calls.</li>
+                <li><strong>Sistema de Snapping:</strong> Atração ao grid com passos de 0.5 unidades para alinhamento perfeito.</li>
+              </ul>
+            </div>
+            <div class="tech-card">
+              <h4>3. Interação e Controle</h4>
+              <ul>
+                <li><strong>Locomoção FPS:</strong> PointerLockControls para navegação fluida via WASD + Mouse.</li>
+                <li><strong>Gizmos:</strong> TransformControls integrados para manipulação direta de eixos.</li>
+                <li><strong>Raycasting:</strong> THREE.Raycaster de alta precisão para detecção de cliques no mundo 3D.</li>
+              </ul>
+            </div>
+            <div class="tech-card">
+              <h4>4. IA Tracker (Monitoramento)</h4>
+              <ul>
+                <li><strong>window.userTracker:</strong> Objeto global que monitora tempo de criação, atalhos e texturização.</li>
+                <li><strong>Onboarding Dinâmico:</strong> Tradução automática de termos técnicos para linguagem humana baseada no progresso.</li>
+                <li><strong>Upgrade Predictivo:</strong> Detecção automática de usuários avançados para liberação de interface Full.</li>
+              </ul>
+            </div>
+            <div class="tech-card">
+              <h4>5. Persistência e Export</h4>
+              <ul>
+                <li><strong>Auto-Save:</strong> Serialização JSON automática no LocalStorage.</li>
+                <li><strong>Formatos:</strong> Exportação nativa em GLTF (indústria) e Código Autônomo (.html).</li>
+                <li><strong>Suporte de Importação:</strong> GLTFLoader, OBJLoader, FBXLoader e STLLoader.</li>
+              </ul>
+            </div>
+            <div class="tech-card">
+              <h4>6. History Manager</h4>
+              <ul>
+                <li><strong>Desfazer/Refazer:</strong> Pilha dupla de estados (Undo/Redo) com limite de 100 ações.</li>
+                <li><strong>State Capture:</strong> Captura estados pré e pós interação para garantir integridade das transformações.</li>
+              </ul>
+            </div>
+          </div>
+
+          <div style="margin-top: 80px;">
+            <div class="level-selector">
+              <div class="level-card active" onclick="updateUI('beginner', this)">
+                <div style="color: var(--primary); font-family: var(--font-mono); margin-bottom: 10px;">LEVEL 01</div>
+                <h4>Iniciante</h4>
+                <p>Linguagem humana. Nada de termos técnicos assustadores.</p>
+              </div>
+              <div class="level-card" onclick="updateUI('medium', this)">
+                <div style="color: var(--primary); font-family: var(--font-mono); margin-bottom: 10px;">LEVEL 02</div>
+                <h4>Médio</h4>
+                <p>Liberação de modificadores e sistemas de colisão.</p>
+              </div>
+              <div class="level-card" onclick="updateUI('advanced', this)">
+                <div style="color: var(--primary); font-family: var(--font-mono); margin-bottom: 10px;">LEVEL 03</div>
+                <h4>Arquiteto</h4>
+                <p>Controle total de vértices e scripts. Poder bruto liberado.</p>
+              </div>
+            </div>
+
+            <div class="adaptive-ui">
+              <div style="display: flex; justify-content: space-between; align-items: center;">
+                <h4 id="ui-title">Interface: Modo Iniciante Ativo</h4>
+                <span style="color: var(--success); font-family: var(--font-mono); font-size: 0.8rem;">● MONITORANDO EVOLUÇÃO</span>
+              </div>
+              <div class="ui-mockup">
+                <div class="ui-sidebar"></div>
+                <div class="ui-content">
+                  <div class="ui-tool"></div>
+                  <div class="ui-tool"></div>
+                  <div class="ui-tool"></div>
+                  <div class="ui-tool advanced"></div>
+                  <div class="ui-tool advanced"></div>
+                </div>
+                <div id="ai-popup" class="glass" style="position: absolute; bottom: 20px; right: 20px; padding: 15px; border-radius: 10px; font-size: 0.75rem; max-width: 200px; display: none;">
+                  <p>Percebi que você evoluiu. Posso ajustar a interface para o nível médio?</p>
+                  <button class="btn-cta" style="padding: 5px 10px; font-size: 0.6rem; margin-top: 10px;">SIM</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <div id="comunidade" class="tab-content">
+      <section class="section-padding">
+        <div class="container" style="text-align: center;">
+          <h2 class="text-gradient" style="font-size: 3rem; margin-bottom: 20px;">Junte-se ao Caos</h2>
+          <p style="color: var(--muted); max-width: 700px; margin: 0 auto 50px;">Acompanhe o desenvolvimento, peça recursos e compartilhe seus mundos nas nossas redes.</p>
+          
+          <div class="social-grid">
+            <a href="https://www.instagram.com/eo_.oliver/" target="_blank" class="social-link social-instagram">
+              <i class="fab fa-instagram"></i>
+              <span>Instagram</span>
+            </a>
+            <a href="https://discord.gg/X5sbBQ2fYx" target="_blank" class="social-link social-discord">
+              <i class="fab fa-discord"></i>
+              <span>Discord</span>
+            </a>
+            <a href="https://www.tiktok.com/@eo_.oliver?lang=pt-BR" target="_blank" class="social-link social-tiktok">
+              <i class="fab fa-tiktok"></i>
+              <span>TikTok</span>
+            </a>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <div id="termos" class="tab-content">
+      <section class="section-padding">
+        <div class="container">
+          <div class="terms-box glass">
+            <h2 class="text-gradient" style="text-align: center; margin-bottom: 40px; font-size: 2.5rem;">Termos de Uso e Condições</h2>
+            
+            <div class="terms-content">
+              <div class="terms-intro">
+                Ao acessar ou utilizar o Pixel Modeler 3D, você concorda integralmente com os termos descritos abaixo.
+              </div>
+
+              <h3>1. Sobre o Pixel Modeler 3D</h3>
+              <p>O Pixel Modeler 3D é uma engine/editor de criação 3D em desenvolvimento contínuo, criada para facilitar a criação de mapas e ambientes tridimensionais.</p>
+
+              <h3>2. Estado de Desenvolvimento (Importante)</h3>
+              <ul>
+                <li>O Pixel Modeler 3D ainda está em desenvolvimento;</li>
+                <li>Podem ocorrer bugs, falhas visuais ou perda de dados;</li>
+                <li>Funcionalidades podem ser removidas ou reformuladas.</li>
+              </ul>
+
+              <h3>3. Conta e Dados</h3>
+              <p>O e-mail informado pode ser usado para avisos do projeto. Não vendemos dados para terceiros.</p>
+
+              <h3>4. Sistema de IA e Monitoramento</h3>
+              <p>Analisamos padrões de uso (tempo de criação, ferramentas) para melhorar a UX. Dados não-pessoais e transparentes.</p>
+
+              <h3>5. Conteúdo do Usuário</h3>
+              <p>Tudo o que você criar pertence a VOCÊ. Pode usar para fins comerciais ou pessoais sem taxas.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <div id="licenca" class="tab-content">
+      <section class="section-padding">
+        <div class="container">
+          <div class="terms-box glass">
+            <h2 class="text-gradient" style="text-align: center; margin-bottom: 40px; font-size: 2.5rem;">Licença MIT (Fictícia)</h2>
+            <div class="license-container">
+              MIT License<br><br>
+              Copyright (c) 2025 Pixel Modeler 3D - "O Retorno Project"<br><br>
+              Permission is hereby granted, free of charge, to any person obtaining a copy
+              of this software and associated documentation files (the "Software"), to deal
+              in the Software without restriction, including without limitation the rights
+              to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+              copies of the Software, and to permit persons to whom the Software is
+              furnished to do so, subject to the following conditions:<br><br>
+              The above copyright notice and this permission notice shall be included in all
+              copies or substantial portions of the Software.<br><br>
+              THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+              IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+              FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+              AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+              LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+              OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+              SOFTWARE.
+            </div>
+            <p style="margin-top: 30px; color: var(--muted); font-size: 0.9rem;">* Esta licença protege o núcleo da engine enquanto garante sua liberdade como criador.</p>
+          </div>
+        </div>
+      </section>
+    </div>
+
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div>
+          <a class="logo" style="margin-bottom: 25px;" onclick="showTab('home')">
+            <div class="logo-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="3"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path></svg></div>
+            <span>PIXEL MODELER 3D</span>
+          </a>
+          <p style="color: var(--muted); font-size: 0.95rem;">Nascida na dificuldade, crescendo na honestidade.</p>
+        </div>
+        <div>
+          <h4>Navegação</h4>
+          <a onclick="showTab('historia')">História</a>
+          <a onclick="showTab('tecnologia')">Tecnologia</a>
+          <a onclick="showTab('comunidade')">Social</a>
+        </div>
+        <div>
+          <h4>Comunidade</h4>
+          <a href="https://discord.gg/X5sbBQ2fYx" target="_blank">Discord</a>
+          <a href="https://www.instagram.com/eo_.oliver/" target="_blank">Instagram</a>
+          <a href="https://www.tiktok.com/@eo_.oliver?lang=pt-BR" target="_blank">TikTok</a>
+        </div>
+        <div>
+          <h4>Legal</h4>
+          <a onclick="showTab('termos')">Privacidade</a>
+          <a onclick="showTab('licenca')">Licença MIT</a>
+          <a onclick="showTab('termos')">Termos de Uso</a>
+        </div>
+      </div>
+      <div style="padding-top: 40px; border-top: 1px solid var(--card-border); display: flex; justify-content: space-between; font-size: 0.8rem; color: #475569;">
+        <p>&copy; 2025 Pixel Modeler 3D. O Retorno Project.</p>
+        <p>Desenvolvido com suor e persistência.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    /* 1. NAVEGAÇÃO POR ABAS */
+    function showTab(tabId) {
+      const tabs = document.querySelectorAll('.tab-content');
+      tabs.forEach(t => t.classList.remove('active'));
+      
+      const btns = document.querySelectorAll('.tab-btn');
+      btns.forEach(b => b.classList.remove('active'));
+      
+      const targetTab = document.getElementById(tabId);
+      if(targetTab) targetTab.classList.add('active');
+      
+      const activeBtn = document.getElementById('btn-' + tabId);
+      if(activeBtn) activeBtn.classList.add('active');
+      
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    /* 2. UI ADAPTATIVA MOCKUP */
+    function updateUI(level, el) {
+      const title = document.getElementById('ui-title');
+      const tools = document.querySelectorAll('.ui-tool.advanced');
+      const cards = document.querySelectorAll('.level-card');
+      const popup = document.getElementById('ai-popup');
+
+      cards.forEach(c => c.classList.remove('active'));
+      if(el) el.classList.add('active');
+
+      if (level === 'beginner') {
+        title.innerText = "Interface: Modo Iniciante Ativo";
+        tools.forEach(t => t.style.display = 'none');
+        popup.style.display = 'none';
+      } else if (level === 'medium') {
+        title.innerText = "Interface: Modo Criador Ativo";
+        tools.forEach((t, i) => t.style.display = i < 2 ? 'block' : 'none');
+        popup.style.display = 'block';
+      } else {
+        title.innerText = "Interface: Modo Arquiteto (Full)";
+        tools.forEach(t => t.style.display = 'block');
+        popup.style.display = 'none';
+      }
+    }
+
+    /* 3. LOG DE INICIALIZAÇÃO TÉCNICA */
+    window.addEventListener('DOMContentLoaded', () => {
+      console.log("%c PIXEL MODELER 3D %c v12.5 INITIALIZED ", 
+        "background: #2dd4bf; color: #000; font-weight: bold; padding: 2px 5px; border-radius: 3px 0 0 3px;", 
+        "background: #0ea5e9; color: #fff; font-weight: bold; padding: 2px 5px; border-radius: 0 3px 3px 0;");
+      
+      console.table({
+        "Engine": "Three.js r160",
+        "Renderer": "WebGL 2.0",
+        "ShadowMap": "PCFSoft",
+        "UI_Intelligence": "Active",
+        "Persistence": "LocalStorage Enabled"
+      });
+
+      // Simulação do objeto global Tracker conforme doc técnica
+      window.userTracker = {
+        sessionStartTime: Date.now(),
+        shortcutsUsed: 0,
+        objectsCreated: 0,
+        currentLevel: 'beginner'
+      };
+    });
+  </script>
+</body>
+</html>
