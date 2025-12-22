@@ -229,31 +229,24 @@
     /* Story Section */
     .story-grid {
       display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 100px;
+      grid-template-columns: 1.5fr 1fr;
+      gap: 60px;
       align-items: start;
     }
 
-    .story-step {
-      padding-left: 30px;
-      border-left: 1px solid var(--card-border);
-      position: relative;
-      margin-bottom: 40px;
+    .story-content p {
+      margin-bottom: 1.5rem;
+      color: var(--muted);
+      font-size: 1.1rem;
     }
 
-    .story-step::before {
-      content: '';
-      position: absolute;
-      left: -5px;
-      top: 0;
-      width: 9px;
-      height: 9px;
-      background: var(--primary);
-      border-radius: 50%;
-      box-shadow: 0 0 10px var(--primary);
+    .story-content h3 {
+      font-size: 1.8rem;
+      margin: 2rem 0 1rem;
+      color: var(--primary);
+      font-weight: 800;
     }
 
-    .story-step h3 { font-size: 1.8rem; margin-bottom: 15px; color: var(--primary); }
     .emphasis { color: white; font-weight: 700; border-bottom: 2px solid var(--primary); }
 
     /* Technical Specs Cards */
@@ -441,7 +434,7 @@
         <div class="hero-grid"></div>
         <div class="container">
           <div style="max-width: 900px;">
-            <div style="font-family: var(--font-mono); color: var(--primary); margin-bottom: 20px;">[ SYSTEM STATUS: RECOVERED FROM CHAOS ]</div>
+            <div style="font-family: var(--font-mono); color: var(--primary); margin-bottom: 20px;">[ Isso é Apenas Um modelador 3d, Eu estou criando a engine de fato. LANÇAMENTO PREVISTO 01/01/2026 ]</div>
             <h1>Não nasceu como engine. <span class="text-gradient">Nasceu como desespero.</span></h1>
             <p style="font-size: 1.4rem; color: var(--muted); margin-bottom: 40px;">Uma ferramenta que entende o peso de começar do zero. O Pixel Modeler 3D foi moldado pela frustração de quem só queria contar uma história e não encontrava o caminho.</p>
             <div style="display: flex; gap: 20px;">
@@ -458,25 +451,64 @@
     <div id="historia" class="tab-content">
       <section class="section-padding">
         <div class="container">
-          <h2 style="font-size: 3rem; margin-bottom: 60px;" class="text-gradient">Forjada na Persistência</h2>
+          <h2 style="font-size: 3rem; margin-bottom: 60px;" class="text-gradient">Pixel Modeler 3D</h2>
           <div class="story-grid">
             <div class="story-content">
-              <div class="story-step">
-                <h3>Tudo começou moscando.</h3>
-                <p>Eu estava em casa, sem nada para fazer, e pensei o que todo mundo já pensou um dia: <span class="emphasis">“vou fazer um jogo”</span>. Parecia simples até eu abrir o Blender.</p>
-                <p>Em poucos minutos, parecia que eu estava brigando com o programa. Botão demais, conceitos demais. Eu só queria criar um mapa.</p>
-              </div>
-              <div class="story-step">
-                <h3>A insistência no erro.</h3>
-                <p>Tentei usar IA para acelerar tudo em "O Retorno". Fui burro no sentido mais honesto: achei que prompts gigantes fariam o trabalho por mim.</p>
-                <p>Foram <span class="emphasis">cinco dias</span> ajustando detalhes, esperando que a IA entendesse minha cabeça. Mas nenhuma IA lê mentes. Ela falhou porque eu não tinha a ferramenta certa.</p>
-              </div>
-              <div class="story-step">
-                <h3>A decisão com medo.</h3>
-                <p>Parei e pensei: "Por que estou forçando a IA em vez de criar a ferramenta para eu mesmo fazer?". Passei um dia e meio apenas processando se eu dava conta.</p>
-                <p>Não houve empolgação, apenas a necessidade de resolver um problema que ninguém mais resolveria por mim.</p>
-              </div>
+              <p>Não nasceu como engine. Nasceu como desespero.</p>
+              <p>Tudo começou do jeito mais comum possível.</p>
+              <p>Eu tava em casa, moscando, sem nada pra fazer, e pensei: “vou fazer um jogo”. Parecia simples.</p>
+              
+              <p>Até eu descobrir que não era. Eu não tinha experiência com modelagem 3D.</p>
+              <p>Abri o Blender e em poucos minutos já parecia que eu tava brigando com o programa. Botão demais, conceito demais, coisa demais pra quem só queria criar um mapa e contar uma história.</p>
+              
+              <p>Mesmo assim, eu insisti. Comecei a desenvolver meu jogo, <span class="emphasis">O Retorno</span>, tentando usar IA pra acelerar tudo.</p>
+              <p>E foi aí que eu fui burro — burro no sentido mais honesto da palavra. Eu achei que a IA conseguiria entregar exatamente o que eu imaginava.</p>
+              
+              <p>Expliquei mapa. Expliquei mecânica. Expliquei atmosfera. Expliquei tudo. Foram cinco dias escrevendo prompts gigantes, ajustando detalhe por detalhe, esperando que em algum momento a IA “entendesse” minha cabeça. Ela não entendeu. E não tinha como entender. Nenhuma IA lê mente.</p>
+
+              <h3>A decisão que mudou tudo</h3>
+              <p>Depois de dias frustrado, cansado e quase desistindo, eu parei e pensei: “por que eu tô tentando forçar a IA a fazer o jogo… em vez de criar a ferramenta certa pra eu mesmo fazer?”</p>
+              <p>Essa ideia não veio com empolgação. Veio com medo. Passei mais ou menos um dia e meio só pensando se isso era possível. Se eu dava conta. Se eu não tava viajando demais.</p>
+              <p>E a verdade é simples: <span class="emphasis">não foi nada fácil.</span></p>
+
+              <h3>O nascimento do Pixel Modeler 3D</h3>
+              <p>Comecei a programar a engine do zero. Sozinho. Sem saber direito onde aquilo ia dar. Nas primeiras horas, tudo quebrava. Parede bugava. Objeto piscava. Nada salvava. Não tinha textura — era tudo cor hex direto no código. Eu não conseguia nem mover objetos direito.</p>
+              
+              <p>Mas eu continuei. Cada problema que aparecia virava um sistema novo. Cada erro virava aprendizado. Cada frustração virava código. Foram dias até chegar numa versão minimamente usável. A v12.5 não nasceu bonita — nasceu funcional, depois de muita pancada.</p>
+              <p>E o mais importante: ela não foi feita pra ser impressionante. Ela foi feita pra ajudar.</p>
+
+              <h3>Criada junto com o jogo O Retorno</h3>
+              <p>O Pixel Modeler 3D não foi criado isolado. Ele cresceu junto com o desenvolvimento de O Retorno.</p>
+              <p>Tudo que a engine tem hoje nasceu de um problema real do jogo:</p>
+              <ul style="margin-bottom: 20px; color: var(--muted); padding-left: 20px;">
+                <li>Parede que piscava porque tinha objeto duplicado</li>
+                <li>Porta impossível de recortar depois</li>
+                <li>Mapa que quebrava ao exportar</li>
+                <li>Retrabalho absurdo por falta de ferramenta simples</li>
+              </ul>
+              <p>Foi aí que eu entendi: não dava pra só alinhar objetos — tinha que entender arquitetura. Não dava pra só desenhar parede — tinha que pensar no jogo final. <span class="emphasis">A engine foi moldada na dor.</span> E isso muda tudo.</p>
+
+              <h3>Uma engine que respeita quem tá começando</h3>
+              <p>Em nenhum momento eu quis criar uma engine “elitista”. Eu lembrava exatamente como era estar perdido. Como era se sentir burro por não entender termos técnicos. Como era pensar em desistir porque a ferramenta parecia feita pra outra pessoa.</p>
+              <p>Então o Pixel Modeler 3D nasceu com um princípio simples: a ferramenta tem que se adaptar ao usuário — não o contrário.</p>
+              <p>Logo ao entrar, você escolhe seu nível: <span class="emphasis">iniciante, médio ou avançado</span>.</p>
+              <p>Se você escolhe iniciante, a engine te acolhe. Interface simples. Linguagem humana. Nada de termo assustador. Inclusive, o próprio app deixa claro: “relaxa… o criador da engine também começou assim.”</p>
+
+              <h3>A engine que cresce com você</h3>
+              <p>E aqui entra uma das partes mais importantes. O Pixel Modeler 3D observa sua evolução real.</p>
+              <p>Ele analisa quanto tempo você demorou pra criar seu primeiro objeto, quanto tempo demora agora, quais ferramentas você começou a usar e como você edita, move e organiza.</p>
+              <p>Quando percebe que você avançou, ele não muda nada sozinho. Ele pergunta: “Percebi que você evoluiu. Posso ajustar a interface para o nível médio?”. E ainda mostra os dados que comprovam isso. Tempo, ações, comparações. Tudo transparente.</p>
+              <p>Se você disser não, nada muda. Se disser sim, a engine cresce com você. Sem te forçar. Sem te julgar.</p>
+
+              <h3>Pra quem é o Pixel Modeler 3D?</h3>
+              <p>Se assim como eu, você não tem muito conhecimento com jogos ou modelagem, já se sentiu travado por ferramentas complexas, quer criar algo seu de verdade ou já pensou em desistir porque parecia impossível: <span class="emphasis">Então o Pixel Modeler 3D é pra você.</span></p>
+              <p>E se você já é experiente, ele não te limita. Ele só não te trata como se todo mundo tivesse começado sabendo.</p>
+
+              <h3>Ainda não é o fim da história</h3>
+              <p>O Pixel Modeler 3D ainda não é a versão final. Eu tô trabalhando duro nele. Ajustando sistemas. Corrigindo erros. Melhorando a experiência.</p>
+              <p>Nada aqui foi feito pra parecer pronto. Foi feito pra ser honesto. Essa engine nasceu da dificuldade. Cresceu no erro. E continua evoluindo do mesmo jeito. Porque no fim, ela não é só uma ferramenta. <span class="emphasis">Ela é o resultado de alguém que não desistiu.</span></p>
             </div>
+
             <div class="terminal">
               <div class="terminal-header">
                 <div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div>
