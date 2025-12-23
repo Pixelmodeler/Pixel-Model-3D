@@ -157,17 +157,17 @@
       box-shadow: 0 0 20px var(--primary-glow);
     }
 
-    .nav-links { display: flex; gap: 8px; }
+    .nav-links { display: flex; gap: 4px; }
     .nav-links button {
       background: none;
       border: none;
       font-family: var(--font-main);
-      font-size: 0.85rem;
+      font-size: 0.75rem;
       font-weight: 600;
       color: var(--muted);
       cursor: pointer;
       transition: 0.3s;
-      padding: 10px 12px;
+      padding: 8px 10px;
       border-radius: var(--radius-sm);
       text-transform: uppercase;
       letter-spacing: 0.5px;
@@ -336,6 +336,92 @@
     .ui-tool { width: 40px; height: 40px; background: #30363d; border-radius: 6px; }
     .ui-tool.advanced { display: none; background: var(--secondary); }
 
+    /* Changelog / Dev Log Styles */
+    .changelog-container {
+      max-width: 900px;
+      margin: 0 auto;
+      position: relative;
+      padding-left: 40px;
+    }
+
+    .changelog-container::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 2px;
+      background: linear-gradient(to bottom, var(--primary), var(--secondary), transparent);
+    }
+
+    .changelog-item {
+      position: relative;
+      margin-bottom: 60px;
+      padding: 30px;
+      border-radius: var(--radius-md);
+      background: rgba(15, 23, 42, 0.3);
+      border: 1px solid var(--card-border);
+    }
+
+    .changelog-item::before {
+      content: '';
+      position: absolute;
+      left: -49px;
+      top: 30px;
+      width: 16px;
+      height: 16px;
+      background: var(--primary);
+      border-radius: 50%;
+      box-shadow: 0 0 15px var(--primary-glow);
+      border: 4px solid var(--background);
+    }
+
+    .changelog-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+      padding-bottom: 15px;
+    }
+
+    .version-tag {
+      background: var(--primary);
+      color: #020617;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-family: var(--font-mono);
+      font-weight: 800;
+      font-size: 0.8rem;
+    }
+
+    .changelog-date {
+      color: var(--muted);
+      font-size: 0.85rem;
+      font-family: var(--font-mono);
+    }
+
+    .changelog-list {
+      list-style: none;
+    }
+
+    .changelog-list li {
+      margin-bottom: 10px;
+      display: flex;
+      gap: 10px;
+      color: #cbd5e1;
+    }
+
+    .changelog-list li::before {
+      content: '>';
+      color: var(--primary);
+      font-family: var(--font-mono);
+    }
+
+    .tag-new { color: #10b981; font-weight: bold; font-size: 0.7rem; text-transform: uppercase; border: 1px solid #10b981; padding: 1px 5px; border-radius: 4px; margin-right: 5px; }
+    .tag-fix { color: #f43f5e; font-weight: bold; font-size: 0.7rem; text-transform: uppercase; border: 1px solid #f43f5e; padding: 1px 5px; border-radius: 4px; margin-right: 5px; }
+    .tag-imp { color: #0ea5e9; font-weight: bold; font-size: 0.7rem; text-transform: uppercase; border: 1px solid #0ea5e9; padding: 1px 5px; border-radius: 4px; margin-right: 5px; }
+
     /* Social Section */
     .social-grid {
       display: grid;
@@ -398,6 +484,7 @@
     @media (max-width: 1024px) {
       .story-grid, .footer-grid, .social-grid { grid-template-columns: 1fr; }
       .level-selector { grid-template-columns: 1fr; }
+      .nav-links { display: none; } /* Simplificação para mobile */
     }
   </style>
 </head>
@@ -416,6 +503,7 @@
         <button onclick="showTab('home')" class="tab-btn active" id="btn-home">Home</button>
         <button onclick="showTab('historia')" class="tab-btn" id="btn-historia">História</button>
         <button onclick="showTab('tecnologia')" class="tab-btn" id="btn-tecnologia">Engine Specs</button>
+        <button onclick="showTab('updates')" class="tab-btn" id="btn-updates">Dev Log</button>
         <button onclick="showTab('comunidade')" class="tab-btn" id="btn-comunidade">Social</button>
         <button onclick="showTab('termos')" class="tab-btn" id="btn-termos">Termos</button>
         <button onclick="showTab('licenca')" class="tab-btn" id="btn-licenca">MIT License</button>
@@ -441,7 +529,7 @@
               <a href="https://github.com/Pixelmodeler/Pixel-Model-3D/releases/download/v12.5/PixelModeler3D_v12.5.exe" target="_blank" class="btn-cta" style="padding: 18px 40px; font-size: 1.1rem;">
                 <i class="fab fa-github"></i> Get Latest Release (.EXE)
               </a>
-              <button class="glass" onclick="showTab('historia')" style="padding: 18px 40px; border-radius: var(--radius-sm); color: white; cursor: pointer; border: 1px solid var(--card-border);">Ler Nossa História</button>
+              <button class="glass" onclick="showTab('updates')" style="padding: 18px 40px; border-radius: var(--radius-sm); color: white; cursor: pointer; border: 1px solid var(--card-border);">Ver Atualizações</button>
             </div>
           </div>
         </div>
@@ -631,6 +719,68 @@
       </section>
     </div>
 
+    <div id="updates" class="tab-content">
+      <section class="section-padding">
+        <div class="container">
+          <div style="text-align: center; margin-bottom: 60px;">
+            <h2 style="font-size: 3rem;" class="text-gradient">Dev Log & Updates</h2>
+            <p style="color: var(--muted); margin-top: 20px;">Acompanhe a evolução do código e as novas funcionalidades implementadas.</p>
+          </div>
+
+                    <div class="changelog-container">
+            <div class="changelog-item">
+              <div class="changelog-header">
+                <span class="version-tag">v13.0 (Latest)</span>
+                <span class="changelog-date">23 DEZEMBRO, 2025</span>
+              </div>
+              <ul class="changelog-list">
+                <li><span class="tag-new">New</span> Sistema de Desenhar Novas Formas Geometricas ou Qualquer coisa que voce quiser.</li>
+                <li><span class="tag-fix">Fix</span> Arrumei O BUG das Paredes Nao seguirem a mira.</li>
+                <li><span class="tag-new">I will add</span> Sistema de Publicar Suas Modelagens, e Modelegens de Personagens Tambem. </li>
+              </ul>
+            </div>
+		  
+            <div class="changelog-item">
+              <div class="changelog-header">
+                <span class="version-tag">>v12.5</span>
+                <span class="changelog-date">10 DEZEMBRO, 2025</span>
+              </div>
+              <ul class="changelog-list">
+                <li><span class="tag-new">New</span> Implementação do sistema de abas dinâmicas no site oficial.</li>
+                <li><span class="tag-imp">Imp</span> Otimização do BufferGeometry para modelos complexos.</li>
+                <li><span class="tag-fix">Fix</span> Correção de bug no exportador GLTF que omitia texturas básicas.</li>
+                <li><span class="tag-new">New</span> Adicionado suporte experimental para arquivos .STL.</li>
+              </ul>
+            </div>
+
+            <div class="changelog-item">
+              <div class="changelog-header">
+                <span class="version-tag">v11.0</span>
+                <span class="changelog-date">10 DEZEMBRO, 2025</span>
+              </div>
+              <ul class="changelog-list">
+                <li><span class="tag-new">New</span> Criação do sistema IA Tracker para onboarding de usuários.</li>
+                <li><span class="tag-imp">Imp</span> Redesign completo da interface (UI) para o modo escuro.</li>
+                <li><span class="tag-fix">Fix</span> Resolvido problema de colisão de câmera em espaços fechados.</li>
+              </ul>
+            </div>
+
+            <div class="changelog-item">
+              <div class="changelog-header">
+                <span class="version-tag">v1.0 (The Birth)</span>
+                <span class="changelog-date">Novembro, 2025</span>
+              </div>
+              <ul class="changelog-list">
+                <li><span class="tag-new">New</span> Lançamento oficial do projeto no GitHub.</li>
+                <li><span class="tag-new">New</span> Sistema básico de desenho de paredes e exportação HTML.</li>
+                <li><span class="tag-imp">Imp</span> Primeiro protótipo funcional integrado com Three.js.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+
     <div id="comunidade" class="tab-content">
       <section class="section-padding">
         <div class="container" style="text-align: center;">
@@ -731,6 +881,7 @@
           <h4>Navegação</h4>
           <a onclick="showTab('historia')">História</a>
           <a onclick="showTab('tecnologia')">Tecnologia</a>
+          <a onclick="showTab('updates')">Dev Log</a>
           <a onclick="showTab('comunidade')">Social</a>
         </div>
         <div>
